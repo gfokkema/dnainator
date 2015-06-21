@@ -9,7 +9,6 @@ import nl.tudelft.dnainator.core.impl.Edge;
 import nl.tudelft.dnainator.core.impl.SequenceNodeFactoryImpl;
 import nl.tudelft.dnainator.core.impl.SequenceNodeImpl;
 import nl.tudelft.dnainator.graph.impl.command.AnalyzeCommand;
-import nl.tudelft.dnainator.graph.query.GraphQueryDescription;
 import nl.tudelft.dnainator.parser.Iterator;
 import nl.tudelft.dnainator.parser.TreeParser;
 import nl.tudelft.dnainator.parser.exceptions.InvalidEdgeFormatException;
@@ -176,81 +175,6 @@ public class Neo4jGraphTest {
 		Set<String> rank2Expect = new HashSet<>();
 		Collections.addAll(rank2Expect, "2", "9", "10");
 		assertUnorderedIDEquals(rank2Expect, db.getRank(2));
-	}
-
-	/**
-	 * Test querying of ranks.
-	 */
-	@Test
-	public void testQueryRanks() {
-		// Query for ranks from 0 up to but not including rank 2.
-		GraphQueryDescription qd = new GraphQueryDescription()
-			.fromRank(0)
-			.toRank(2);
-		Set<String> expect = new HashSet<>();
-		Collections.addAll(expect, "7", "5", "3", "11", "8");
-		assertUnorderedIDEquals(expect, db.queryNodes(qd));
-	}
-
-	/**
-	 * Test querying of IDs.
-	 */
-	@Test
-	public void testQueryIds() {
-		GraphQueryDescription qd = new GraphQueryDescription()
-			.hasId("2");
-		Set<String> expect = new HashSet<>();
-		Collections.addAll(expect, "2");
-		assertUnorderedIDEquals(expect, db.queryNodes(qd));
-
-		// Also test for multiple ids (reusing the old one)
-		qd = qd.hasId("3");
-		Collections.addAll(expect, "3");
-		assertUnorderedIDEquals(expect, db.queryNodes(qd));
-
-		// Search for non-existent id.
-		qd = new GraphQueryDescription()
-			.hasId("42");
-		expect = new HashSet<>(); // Empty result.
-		assertUnorderedIDEquals(expect, db.queryNodes(qd));
-	}
-
-	/**
-	 * Test the filtering functionality.
-	 */
-	@Test
-	public void testQueryFilter() {
-		// CHECKSTYLE.OFF: MagicNumber
-		GraphQueryDescription qd = new GraphQueryDescription()
-			.filter((sn) -> Integer.parseInt(sn.getId()) > 8);
-		// CHECKSTYLE.ON: MagicNumber
-		Set<String> expect = new HashSet<>();
-		Collections.addAll(expect, "9", "10", "11");
-		assertUnorderedIDEquals(expect, db.queryNodes(qd));
-	}
-
-	/**
-	 * Test querying the source string.
-	 */
-	@Test
-	public void testQuerySources() {
-		GraphQueryDescription qd = new GraphQueryDescription()
-			.containsSource("ASDF");
-		Set<String> expect = new HashSet<>();
-		Collections.addAll(expect, "2", "5", "3", "7", "8", "11");
-		assertUnorderedIDEquals(expect, db.queryNodes(qd));
-
-		// Also test for multiple sources (reusing the old one)
-		qd = qd.containsSource("ASD");
-		Collections.addAll(expect, "9", "10");
-		assertUnorderedIDEquals(expect, db.queryNodes(qd));
-
-		// Search non-existing source.
-		qd = new GraphQueryDescription()
-			.containsSource("FOO");
-		// Expect an empty result
-		expect = new HashSet<>();
-		assertUnorderedIDEquals(expect, db.queryNodes(qd));
 	}
 
 	/**

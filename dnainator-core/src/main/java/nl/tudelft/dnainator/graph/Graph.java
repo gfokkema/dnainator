@@ -6,7 +6,6 @@ import nl.tudelft.dnainator.annotation.Range;
 import nl.tudelft.dnainator.core.EnrichedSequenceNode;
 import nl.tudelft.dnainator.core.impl.Cluster;
 import nl.tudelft.dnainator.graph.interestingness.InterestingnessStrategy;
-import nl.tudelft.dnainator.graph.query.GraphQueryDescription;
 import nl.tudelft.dnainator.tree.TreeNode;
 
 import java.util.Collection;
@@ -82,13 +81,6 @@ public interface Graph extends AnnotationCollection {
 	 * @param is the interestingness strategy.
 	 */
 	void setInterestingnessStrategy(InterestingnessStrategy is);
-
-	/**
-	 * Find the nodes satisfying the given query.
-	 * @param q the query for finding the nodes.
-	 * @return the result of the query.
-	 */
-	List<EnrichedSequenceNode> queryNodes(GraphQueryDescription q);
 
 	/**
 	 * Return all annotations covered by the given range of ranks.

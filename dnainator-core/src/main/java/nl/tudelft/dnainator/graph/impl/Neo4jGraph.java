@@ -9,6 +9,8 @@ import nl.tudelft.dnainator.core.impl.Cluster;
 import nl.tudelft.dnainator.graph.Graph;
 import nl.tudelft.dnainator.graph.impl.command.AnalyzeCommand;
 import nl.tudelft.dnainator.graph.impl.command.Command;
+import nl.tudelft.dnainator.graph.impl.nodes.Neo4jAnnotation;
+import nl.tudelft.dnainator.graph.impl.nodes.Neo4jSequenceNode;
 import nl.tudelft.dnainator.graph.impl.properties.AnnotationProperties;
 import nl.tudelft.dnainator.graph.impl.properties.PhylogenyProperties;
 import nl.tudelft.dnainator.graph.impl.properties.SequenceProperties;
@@ -18,7 +20,6 @@ import nl.tudelft.dnainator.graph.impl.query.Query;
 import nl.tudelft.dnainator.graph.interestingness.InterestingnessStrategy;
 import nl.tudelft.dnainator.graph.interestingness.Scores;
 import nl.tudelft.dnainator.graph.interestingness.impl.SummingScoresStrategy;
-import nl.tudelft.dnainator.graph.query.GraphQueryDescription;
 import nl.tudelft.dnainator.parser.Iterator;
 import nl.tudelft.dnainator.tree.TreeNode;
 
@@ -170,11 +171,6 @@ public final class Neo4jGraph implements Graph {
 	public Map<Integer, List<Cluster>> getAllClusters(List<String> startNodes,
 							int end, int threshold) {
 		return query(new AllClustersQuery(startNodes, end, threshold, is));
-	}
-
-	@Override
-	public List<EnrichedSequenceNode> queryNodes(GraphQueryDescription qd) {
-		return Neo4jQuery.of(qd).execute(service);
 	}
 
 	/**
